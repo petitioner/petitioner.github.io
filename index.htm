@@ -18,7 +18,7 @@
 				view: "FitV"
 			}
 		};
-		var myPDF = PDFObject.embed("../files/CV.pdf", "#pdf", options);
+		
 		var el = document.querySelector("#results");
 		el.setAttribute("class", (myPDF) ? "success" : "fail");
 		el.innerHTML = (myPDF) ? "PDFObject successfully added an &lt;embed> element to the page!" : "Uh-oh, the embed didn't work.";
@@ -75,7 +75,7 @@
 <p><a href="#" class="embed-link">Click this link to embed the PDF.</a></p>
 <div id="results" class="hidden"></div>
 <div id="pdf"></div>
-	    <script src="../src/js/PDFObject/pdfobject.min.js"></script>
+	    <script src="../src/js/PDFObject/pdfobject.min.js">var myPDF = PDFObject.embed("../files/CV.pdf", "#pdf", options);</script>
 	    
 
 
