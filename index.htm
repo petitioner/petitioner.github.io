@@ -2,13 +2,8 @@
 <html>
 <head>
   <meta charset = "UTF-8">
-  <link rel="stylesheet" type="text/css" href="src/css/my.css">		
-  <title>John Chiang's Page</title>      
-</head>
-<body>
-
-	<script src="../src/js/PDFObject/pdfobject.min.js"></script>
-	<script>
+  <link rel="stylesheet" type="text/css" href="src/css/my.css">	
+		<script>
 	    	document.querySelector(".embed-link").addEventListener("click", function (e){
 		e.preventDefault();
 		this.setAttribute("class", "hidden");
@@ -27,6 +22,12 @@
 		el.innerHTML = (myPDF) ? "PDFObject successfully added an &lt;embed> element to the page!" : "Uh-oh, the embed didn't work.";
 	});
 	</script>
+  <title>John Chiang's Page</title>      
+</head>
+<body>
+
+	<script src="../src/js/PDFObject/pdfobject.min.js"></script>
+
 	
 	
 <div class="header">
@@ -42,7 +43,9 @@
   <a href="#" style="float:right">Link</a>
 </div>
 	
-<div class="rightcolumn">
+<div class="row">
+	
+   <div class="rightcolumn">
     <div class="card">
       <h2>About Me</h2>
       <div class="fakeimg" style="height:100px;">Image</div>
@@ -59,9 +62,9 @@
       <h3>Follow Me</h3>
       <p>Some text..</p>
     </div>
-</div>
+   </div>
 		
-<div class="row">	
+	
   <div class="leftcolumn">
     <div class="card">
       <h2>TITLE HEADING</h2>
