@@ -43,6 +43,12 @@ body {
 }
 
 /* 创建两个不相等的彼此并排的浮动列 */
+/* body framework */
+.row {   
+  position: relative;
+  height: 100%;
+}
+
 /* 左列 */
 .leftcolumn {   
   float: left;
