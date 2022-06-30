@@ -50,13 +50,13 @@ body {
 }
 
 /* 左列 */
-.leftcolumn {   
-  float: left;
+.rightcolumn {   
+  float: right;
   width: 75%;
 }
 
 /* 右列 */
-.rightcolumn {
+.leftcolumn {
   float: left;
   width: 25%;
   background-color: #f1f1f1;
