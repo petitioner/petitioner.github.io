@@ -3,31 +3,11 @@
     <head>
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="src/css/my.css" />
-        <script>
-            document.querySelector(".embed-link").addEventListener("click", function (e) {
-                e.preventDefault();
-                this.setAttribute("class", "hidden");
-                var options = {
-                    pdfOpenParams: {
-                        pagemode: "thumbs",
-                        navpanes: 0,
-                        toolbar: 0,
-                        statusbar: 0,
-                        view: "FitV",
-                    },
-                };
-                var myPDF = PDFObject.embed("../files/CV.pdf", "#pdf", options);
-                var el = document.querySelector("#results");
-                el.setAttribute("class", myPDF ? "success" : "fail");
-                el.innerHTML = myPDF ? "PDFObject successfully added an &lt;embed> element to the page!" : "Uh-oh, the embed didn't work.";
-            });
-        </script>
         <title>John Chiang's Page</title>
     </head>
     <body>
         <div class="header">
             <h1>John Chiang's Page</h1>
-            <!--    <p>Resize the browser window to see the effect.</p>       -->
         </div>
 
         <div class="topnav">
@@ -67,7 +47,26 @@
                     <div id="results" class="hidden"></div>
                     <div id="pdf"></div>
                     <script src="../src/js/PDFObject/pdfobject.min.js"></script>
-
+        <script>
+            document.querySelector(".embed-link").addEventListener("click", function (e) {
+                e.preventDefault();
+                this.setAttribute("class", "hidden");
+                var options = {
+                    pdfOpenParams: {
+                        pagemode: "thumbs",
+                        navpanes: 0,
+                        toolbar: 0,
+                        statusbar: 0,
+                        view: "FitV",
+                    },
+                };
+                var myPDF = PDFObject.embed("../files/CV.pdf", "#pdf", options);
+                var el = document.querySelector("#results");
+                el.setAttribute("class", myPDF ? "success" : "fail");
+                el.innerHTML = myPDF ? "PDFObject successfully added an &lt;embed> element to the page!" : "Uh-oh, the embed didn't work.";
+            });
+        </script>
+                    
                     <p>
                         Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                         ullamco.
@@ -77,18 +76,15 @@
                 <div class="card">
                     <h2>Publications</h2>
                     <h5>Title description, Sep 2, 2017</h5>
-                    <div class="fakeimg" style="height: 200px;">
-                        <embed class="pdfobject" type="application/pdf" title="Embedded PDF" src="../files/CV.pdf" style="overflow: auto; width: 100%; height: 100%;" />
-
+                    <div class="fakeimg" style="height: 100%;">
                         <iframe src="Publications.Content.html" width="100%" height="100%" style="border: 0;"></iframe>
-                        <br />
-                        <iframe src="Publications.Content.html" height="500" width="800" style="border: 0;"></iframe>
                         <br />
                         <iframe src="Publications.Content.html" style="height: 450px; width: 700px; border: none;" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                     </div>
                 </div>
 
                 <div class="card">
+                    <embed class="pdfobject" type="application/pdf" title="Embedded PDF" src="../files/CV.pdf" style="overflow: auto; width: 100%; height: 100%;" />
                     <h2>Presentations</h2>
                     <h5>Title description, Sep 2, 2017</h5>
                     <div class="fakeimg" style="height: 200px;">Image</div>
