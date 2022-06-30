@@ -79,12 +79,13 @@ body {
   margin-top: 20px;
 }
 
-/* 清除列之后的浮动 */
+/* 清除列之后的浮动 
 .row:after {
   content: "";
   display: table;
   clear: both;
 }
+*/
 
 /* 页脚 */
 .footer {
