@@ -52,7 +52,7 @@ body {
 /* 右列 */
 .rightcolumn {   
   float: left;
-  width: 75%;
+  width: 100%;
   padding-left: 25%;
 }
 
