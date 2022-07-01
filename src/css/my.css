@@ -1,32 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@petitioner 
-petitioner
-/
-petitioner.github.io
-Public
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-petitioner.github.io/src/css/my.css
-@petitioner
-petitioner Update my.css
-Latest commit 957827f 18 hours ago
- History
- 1 contributor
-111 lines (95 sloc)  1.71 KB
-
 * {
   box-sizing: border-box;
 }
@@ -84,7 +55,8 @@ body {
   width: 25%;
   background-color: #f1f1f1;
   padding-left: 20px;
-  position: absolute;
+  position: -webkit-sticky; /* for Safari users */
+  position: sticky;
 } 
 
 /* 右列 */
