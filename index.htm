@@ -34,42 +34,14 @@
             </div>
 
             <div class="rightcolumn" style="height: 100%;">
+                
                 <div class="card">
-                    <h2>TITLE HEADING</h2>
-                    <h5>Title description, Dec 7, 2017</h5>
-                    <div class="fakeimg" style="height: 200px;">Image</div>
-                    <p>My Name is John Chiang Smith.</p>
-
-                    <h1>PDFObject Example: Invoking conditional JavaScript upon successful embed (onclick)</h1>
-
-                    <p><a href="#" class="embed-link">Click this link to embed the PDF.</a></p>
-                    <div id="results" class="hidden"></div>
-                    <div id="pdf"></div>
-                    <script src="../src/js/PDFObject/pdfobject.min.js"></script>
-                    <script>
-                        document.querySelector(".embed-link").addEventListener("click", function (e) {
-                            e.preventDefault();
-                            this.setAttribute("class", "hidden");
-                            var options = {
-                                pdfOpenParams: {
-                                    pagemode: "thumbs",
-                                    navpanes: 0,
-                                    toolbar: 0,
-                                    statusbar: 0,
-                                    view: "FitV",
-                                },
-                            };
-                            var myPDF = PDFObject.embed("../files/CV.pdf", "#pdf", options);
-                            var el = document.querySelector("#results");
-                            el.setAttribute("class", myPDF ? "success" : "fail");
-                            el.innerHTML = myPDF ? "PDFObject successfully added an &lt;embed> element to the page!" : "Uh-oh, the embed didn't work.";
-                        });
-                    </script>
-
-                    <p>
-                        Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco.
-                    </p>
+                    <h2>HomePage.Content.html</h2>
+                    <h5>Title description, Sep 2, 2017</h5>
+                    <div class="fakeimg" style="height: 100%;">
+                        <iframe src="HomePage.Content.html" width="100%" height="100%" style="border: 0; height: 450px;"></iframe>
+                        <br />
+                    </div>
                 </div>
 
                 <div class="card">
