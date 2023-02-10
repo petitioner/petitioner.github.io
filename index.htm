@@ -6,6 +6,12 @@
     <head>
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="src/css/my.css" />
+        <script src="src/js/jquery-3.6.3.min.js"></script>
+        <script>
+            $(function(){
+                $("#footer").load("footer.htm");
+            });
+        </script>
         <title>John Chiang's Page</title>
     </head>
     
@@ -120,6 +126,10 @@
         <br />  E include footer.htm <br />
         
         <embed type="text/html" src="footer.htm"   height="100%"   width= "100%"  border="0" scrolling="no">
+        
+        <div id="footer"></div>
+        
+        <br />  F include footer.htm <br />
 
         
     </body>
