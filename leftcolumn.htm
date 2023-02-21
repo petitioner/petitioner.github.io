@@ -1,10 +1,27 @@
-            <div class="leftcolumn" style="height: 100%;  float: left;
-  width: 25%;
-  background-color: #f1f1f1;
-  position: -webkit-sticky; 
-  position: sticky;
-  height: 400px;
-  top: 0px;">
+<!DOCTYPE html>
+<html lang="en">    
+
+    <!-- HEAD PART -->
+    
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="src/css/my.css" />
+        <script src="src/js/jquery-3.6.3.js"></script>
+        <script>
+            $(function(){
+                $("#header").load("header.htm");
+                $("#leftcolumnpage").load("leftcolumn.htm");
+                $("#footer").load("footer.htm");
+            });
+        </script>
+        <title>John Chiang's Page</title>
+    </head>
+    
+    <!-- BODY PART -->
+    
+    <body>
+
+            <div class="leftcolumn" style="height: 100%;">
                         
                 <div class="card">
                     <h2>About Me</h2>
@@ -29,3 +46,6 @@
                 </div>                       
                         
             </div>
+
+     </body>
+</html>
