@@ -31,7 +31,16 @@
                 $("#leftcolumnpage").load("leftcolumn.htm");
             });
             </script>
-            <div id="leftcolumnpage"></div>           
+            <div id="leftcolumnpage"></div>  
+            <script language=JavaScript>
+parent.location.reload();
+</script> 
+            <script language=JavaScript>
+self.opener.location.reload();
+</script>
+            <script language=JavaScript>
+parent.leftcolumnpage.location.reload();
+</script>
             
 
             <div class="rightcolumn" style="height: 100%;">
