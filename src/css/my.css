@@ -58,7 +58,7 @@ body {
   /*position: sticky;         */         
       position: fixed;    
   height: 400px;
-  top: 40px;                 
+  top: -40px;                 
 }
 
 /* 右列 */
