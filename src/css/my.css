@@ -54,11 +54,10 @@ body {
   float: left;
   width: 25%;
   background-color: #f1f1f1;
-  /*position: -webkit-sticky; *//* for Safari users */
-  /*position: sticky;         */         
-      position: fixed;    
+  position: -webkit-sticky; /* for Safari users */
+  position: sticky;                    
   height: 400px;
-  top: -40px;                 
+  top: 0px;                 
 }
 
 /* 右列 */
