@@ -54,13 +54,13 @@ body {
   float: left;
   width: 25%;
   background-color: #f1f1f1;
-  /*position: -webkit-sticky; *//* for Safari users */
-  /*position: sticky;         */
-    position: fixed;
-    top: 0;
+  position: -webkit-sticky; /* for Safari users */
+  position: sticky;         
+    /*  position: fixed;    */
+     /*  top: 0;            */
     left: 0;
   height: 400px;
-  /*top: 0px;                 */
+  top: 0px;                 
 }
 
 /* 右列 */
