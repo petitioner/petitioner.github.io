@@ -1,4 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">    
 
+    <!-- HEAD PART -->
+    
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="src/css/my.css" />
+        <script src="src/js/jquery-3.6.3.js"></script>
+        <script>
+            $(function(){
+                $("#header").load("header.htm");
+                $("#leftcolumnpage").load("leftcolumn.htm");
+                $("#footer").load("footer.htm");
+            });
+        </script> 
+        
+        <title>John Chiang's Page</title>
+    </head>
+    
+    <!-- BODY PART -->
+    
+    <body>
+ 
+ 
 
                         
                 <div class="card">
@@ -25,25 +49,5 @@
                         
   
 
-
-    <!-- 放置JavaScript代码在</body>标签之前 -->
-    <script>
-        // 使用原生JavaScript等待文档加载完成
-        document.addEventListener("DOMContentLoaded", function() {
-            // 在文档加载完成后执行此代码
-            // 在这里初始化左列的内容
-                        $("#header").load("header.htm");
-                $("#leftcolumnpage").load("leftcolumn.htm");
-                $("#footer").load("footer.htm");
-        });
-    </script>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="src/css/my.css" />
-        <script src="src/js/jquery-3.6.3.js"></script>
-        <script>
-            $(function(){
-                $("#header").load("header.htm");
-                $("#leftcolumnpage").load("leftcolumn.htm");
-                $("#footer").load("footer.htm");
-            });
-        </script> 
+    </body>
+</html>  
