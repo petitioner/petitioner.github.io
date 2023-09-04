@@ -51,13 +51,13 @@ body {
 
 /* 左列 */
 .leftcolumn {
-  float: left;   
+  float: left;
   width: 25%;
   background-color: #f1f1f1;
   position: -webkit-sticky; /* for Safari users */
-  position: sticky;                    
+  position: sticky;
   height: 400px;
-  top: 0px;                 
+  top: 0px;
 }
 
 /* 右列 */
