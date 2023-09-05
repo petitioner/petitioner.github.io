@@ -15,6 +15,7 @@
         </div>
         <div id="headerContainer"></div>
         <script>
+            <!--   need jquery   -->
             $(function(){
                 $("#headerContainer").load("header.htm");
             });
@@ -45,6 +46,18 @@
                     <p>Some text..</p>
                 </div>
             </div>
+
+            <div id="leftcolumnContainer"></div>
+    <script>
+        // 使用 JavaScript 动态加载模块
+        const leftcolumnContainer = document.getElementById('leftcolumnContainer');
+        fetch('leftcolumn.htm')
+            .then(response => response.text())
+            .then(html => {
+                leftcolumnContainer.innerHTML = html;
+            });
+    </script>
+            
 
             <div class="rightcolumn" style="height: 100%;">
                 
@@ -169,6 +182,14 @@
             </div>
         </div>
 
+        
+        <!--
+        <div class="footer">
+            <h2>@西星 者</h2>
+        </div>        
+        <iframe src="footer.htm"  height="100%"   width= "100%"  frameBorder="0" scrolling="no"></iframe>
+        -->
+        
         <div class="footer">
             <h2>John C. Smith</h2>
         </div>
