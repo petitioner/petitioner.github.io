@@ -1,18 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+       <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="src/css/my.css" />
-    
-                    <script src="../src/js/PDFObject/pdfobject.min.js"></script>
-                    <script src="../src/js/pdfjs/build/pdf.js"></script>
-                    <script src="../src/js/pdfjs/web/viewer.js"></script>
-                    <link rel="stylesheet" href="../src/js/pdfjs/web/viewer.css">       
-                    <script>
-                        $(function(){
-                            $("#headerContainer").load("header.htm");
-                        });
-                    </script> 
+        <script src="src/js/jquery-3.6.3.js"></script>
+
+
         <title>John Chiang's Page</title>
     </head>
     
@@ -21,7 +14,11 @@
             <h1>John Chiang's Page</h1>
         </div>
         <div id="headerContainer"></div>
-
+        <script>
+            $(function(){
+                $("#headerContainer").load("header.htm");
+            });
+        </script> 
 
         
         <div class="topnav">
