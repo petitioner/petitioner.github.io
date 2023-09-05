@@ -95,6 +95,7 @@ body {
   text-align: center;
   background: #ddd;
   margin-top: 20px;
+  position: relative;
 }
 
 /* 响应式布局 - 当屏幕的宽度小于 800 像素时，使两列堆叠而不是并排 */
