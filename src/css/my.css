@@ -58,6 +58,7 @@ body {
   position: sticky;
   height: 400px;
   top: 0px;
+  bottom: -400px; /*   Your Own Choice*/
 }
 
 /* 右列 */
@@ -95,7 +96,7 @@ body {
   text-align: center;
   background: #ddd;
   margin-top: 20px;
-  position: relative;
+  position: relative;  /*  ChatGPT's advice   */
 }
 
 /* 响应式布局 - 当屏幕的宽度小于 800 像素时，使两列堆叠而不是并排 */
