@@ -16,7 +16,14 @@
         <div class="header">
             <h1>John Chiang's Page</h1>
         </div>
+        <div id="headerContainer"></div>
+        <script>
+            $(function(){
+                $("#headerContainer").load("header.htm");
+            });
+        </script> 
 
+        
         <div class="topnav">
             <a href="#">Link</a>
             <a href="#">Link</a>
@@ -166,7 +173,18 @@
         </div>
 
         <div class="footer">
-            <h2></h2>
+            <h2>John C. Smith</h2>
         </div>
+        <div id="footerContainer"></div>
+    <script>
+        // 使用 JavaScript 动态加载模块
+        const footerContainer = document.getElementById('footerContainer');
+        fetch('footer.htm')
+            .then(response => response.text())
+            .then(html => {
+                moduleContainer.innerHTML = html;
+            });
+    </script>
+        
     </body>
 </html>
