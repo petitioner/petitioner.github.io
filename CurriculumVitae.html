@@ -1,34 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">    
-
-    <!-- HEAD PART -->
-    
+<html>
     <head>
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="src/css/my.css" />
-        <script src="src/js/jquery-3.6.3.min.js"></script>
-        <script>
-            $(function(){
-                $("#header").load("header.htm");
-                $("#leftcolumn").load("leftcolumn.htm");
-                $("#footer").load("footer.htm");
-            });
-        </script>
-        <title>John Chiang's Page</title>
+        <script src="src/js/jquery-3.6.3.js"></script>
+
+        
+        <title>John Chiang Smith's Page</title>
     </head>
     
-    <!-- BODY PART -->
-    
-    <body>
-        
-        <div id="header"></div>
+<body>
+    <div id="headerContainer" ></div> 
+        <script>
+            $(function(){
+                $("#headerContainer").load("header.htm");
+                // $("#leftcolumnpage").load("leftcolumn.htm");
+                // $("#footer").load("footer.htm");
+            });
+        </script> 
 
-        <div class="row" style="height: 100%;">
-            
-            <div id="leftcolumn" style="top: 0px;" ></div>
-            
-            <div class="rightcolumn" style="height:  100%;">
-
+    <div class="row" style="height: 100%;">
+        <div class="leftcolumn" style="height: 100%;" id="leftcolumnContainer" ></div>
+        <script>
+            // 使用 JavaScript 动态加载模块
+            const leftcolumnContainer = document.getElementById('leftcolumnContainer');
+            fetch('leftcolumn.htm')
+                .then(response => response.text())
+                .then(html => {
+                    leftcolumnContainer.innerHTML = html;
+                });
+        </script>
+        <div class="rightcolumn" style="height: 100%;">
+             
+ 
                 <div class="card"  >
                     <h2>Curriculum Vitae</h2>     
                     
@@ -38,11 +42,26 @@
                     </div>
                 </div>
 
-            </div>
-        </div>
 
-        <br />        
-        <div id="footer"></div>
-        
-    </body>
+
+
+
+
+ 
+        </div>
+    </div>
+    <div class="footer">
+        <h2>John C. Smith</h2>
+    </div>
+    <div id="footerContainer" class="footer"></div>
+    <script>
+        // 使用 JavaScript 动态加载模块
+        const footerContainer = document.getElementById('footerContainer');
+        fetch('footer.htm')
+            .then(response => response.text())
+            .then(html => {
+                footerContainer.innerHTML = html;
+            });
+    </script>
+</body>
 </html>
