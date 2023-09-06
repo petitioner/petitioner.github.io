@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8"/>
-    <link href="src/css/my.css" rel="stylesheet" type="text/css"/>
-    <script src="src/js/jquery-3.6.3.js"></script>
-    <title>John Chiang's Page</title>
-</head>
-<body>
-    <div class="header">
-        <h1>John Chiang's Page</h1>
-    </div>
-    <div class="header" id="headerContainer" ></div>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="src/css/my.css" />
+        <script src="src/js/jquery-3.6.3.js"></script>
     <script>
         // 使用 JavaScript 动态加载模块
         const headerContainer = document.getElementById('headerContainer');
@@ -20,6 +13,15 @@
                 headerContainer.innerHTML = html;
             });
     </script>
+        
+        <title>John Chiang's Page</title>
+    </head>
+<body>
+    <div class="header">
+        <h1>John Chiang's Page</h1>
+    </div>
+    <div class="header" id="headerContainer" ></div>
+
     <div class="topnav">
         <a href="#">Link</a>
         <a href="#">Link</a>
