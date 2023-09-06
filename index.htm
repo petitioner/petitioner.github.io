@@ -4,18 +4,17 @@
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="src/css/my.css" />
         <script src="src/js/jquery-3.6.3.js"></script>
-    <script>
-        // 使用 JavaScript 动态加载模块
-        const headerContainer = document.getElementById('headerContainer');
-        fetch('header.htm')
-            .then(response => response.text())
-            .then(html => {
-                headerContainer.innerHTML = html;
+        <script>
+            $(function(){
+                $("#header").load("header.htm");
+                // $("#leftcolumnpage").load("leftcolumn.htm");
+                // $("#footer").load("footer.htm");
             });
-    </script>
+        </script> 
         
         <title>John Chiang's Page</title>
     </head>
+    
 <body>
     <div class="header">
         <h1>John Chiang's Page</h1>
