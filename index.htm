@@ -1,30 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="src/css/my.css"/>
+    <meta charset="utf-8"/>
+    <link href="src/css/my.css" rel="stylesheet" type="text/css"/>
     <script src="src/js/jquery-3.6.3.js"></script>
     <title>John Chiang's Page</title>
 </head>
-
 <body>
     <div class="header">
         <h1>John Chiang's Page</h1>
     </div>
-    <div id="headerContainer"></div>
+    <div id="headerContainer" class="header"></div>
     <script>
-        $(function(){
+        // 使用 JavaScript 动态加载模块
+        $(function() {
             $("#headerContainer").load("header.htm");
         });
-    </script> 
-
+    </script>
     <div class="topnav">
         <a href="#">Link</a>
         <a href="#">Link</a>
         <a href="#">Link</a>
         <a href="#" style="float: right;">Link</a>
     </div>
-
     <div class="row" style="height: 100%;">
         <div class="leftcolumn" style="height: 100%;" id="leftcolumnContainer" ></div>
         <script>
@@ -42,58 +40,27 @@
                 <h5>Title description, Dec 7, 2017</h5>
                 <div class="fakeimg" style="height: 200px;">Image</div>
                 <p>My Name is John Chiang Smith.</p>
-
                 <h1>PDFObject Example: Invoking conditional JavaScript upon successful embed (onclick)</h1>
-
-                <p><a href="#" class="embed-link">Click this link to embed the PDF.</a></p>
-                <div id="results" class="hidden"></div>
-                <div id="pdf"></div>
-                <a target="_blank" href="../src/js/pdfjs/web/viewer.html?file=../../../../../files/CV.pdf">在线预览PDF文件</a>
-            </div>
-            <div class="card">
-                <h2>TITLE HEADING</h2>
-                <h5>Title description, Dec 7, 2017</h5>
-                <div class="fakeimg" style="height: 200px;">Image</div>
-                <p>My Name is John Chiang Smith.</p>
-
-                <h1>PDFObject Example: Invoking conditional JavaScript upon successful embed (onclick)</h1>
-
-                <p><a href="#" class="embed-link">Click this link to embed the PDF.</a></p>
+                <p><a class="embed-link" href="#">Click this link to embed the PDF.</a></p>
                 <div class="hidden" id="results"></div>
                 <div id="pdf"></div>
-                <script src="../src/js/PDFObject/pdfobject.min.js"></script>
-                <script>
-                    document.querySelector(".embed-link").addEventListener("click", function (e) {
-                        e.preventDefault();
-                        this.setAttribute("class", "hidden");
-                        var options = {
-                            pdfOpenParams: {
-                                pagemode: "thumbs",
-                                navpanes: 0,
-                                toolbar: 0,
-                                statusbar: 0,
-                                view: "FitV",
-                            },
-                        };
-                        var myPDF = PDFObject.embed("../files/CV.pdf", "#pdf", options);
-                        var el = document.querySelector("#results");
-                        el.setAttribute("class", myPDF ? "success" : "fail");
-                        el.innerHTML = myPDF ? "PDFObject successfully added an &lt;embed> element to the page!" : "Uh-oh, the embed didn't work.";
-                    });
-                </script>
-
-                <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                <a href="../src/js/pdfjs/web/viewer.html?file=../../../../../files/CV.pdf" target="_blank">在线预览PDF文件</a>
             </div>
-            <div class="card">
-                <h2>Publications</h2>
-                <h5>Title description, Sep 2, 2017</h5>
-                <div class="fakeimg" style="height: 100%;">
-                    <iframe src="Publications.Content.html" width="100%" height="100%" style="border: 0; height: 450px;"></iframe>
-                    <br />
-                </div>
-            </div>
-            <div class="card">
-                <h2>Test HomePage Publications</h2>
-                <h5>Title description, Sep 2, 2017</h5>
-                <div class="fakeimg" style="height: 100%;">
-                    <iframe src="HomePage.Content.html" width="
+            <!-- 这里还有其他 card 元素 -->
+        </div>
+    </div>
+    <div class="footer">
+        <h2>John C. Smith</h2>
+    </div>
+    <div id="footerContainer" class="footer"></div>
+    <script>
+        // 使用 JavaScript 动态加载模块
+        const footerContainer = document.getElementById('footerContainer');
+        fetch('footer.htm')
+            .then(response => response.text())
+            .then(html => {
+                footerContainer.innerHTML = html;
+            });
+    </script>
+</body>
+</html>
