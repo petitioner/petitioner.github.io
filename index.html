@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="src/css/my.css" />
+        <script src="src/js/jquery-3.6.3.js"></script>
+
+        
+        <title>John Chiang Smith's Page</title>
+    </head>
+    
+<body>
+    <div id="headerContainer" ></div> 
+        <script>
+            $(function(){
+                $("#headerContainer").load("header.htm");
+                // $("#leftcolumnpage").load("leftcolumn.htm");
+                // $("#footer").load("footer.htm");
+            });
+        </script> 
+
+    <div class="row" style="height: 100%;">
+        <div class="leftcolumn" style="height: 100%;" id="leftcolumnContainer" ></div>
+        <script>
+            // 使用 JavaScript 动态加载模块
+            const leftcolumnContainer = document.getElementById('leftcolumnContainer');
+            fetch('leftcolumn.htm')
+                .then(response => response.text())
+                .then(html => {
+                    leftcolumnContainer.innerHTML = html;
+                });
+        </script>
+        <div class="rightcolumn" style="height: 100%;">
+             
+                <div class="card">
+                    <h2>HomePage.Content.htm</h2>
+                    <h5>Title description, Sep 2, 2017</h5>
+                    <div class="fakeimg" style="height: 100%;">
+                        <iframe src="HomePage.Content.htm" width="100%" height="100%" style="border: 0; height: 450px;"></iframe>
+                        <br />
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Publications</h2>
+                    <h5>Title description, Sep 2, 2017</h5>
+                    <div class="fakeimg" style="height: 100%;">
+                        <iframe src="Publications.Content.htm" width="100%" height="100%" style="border: 0; height: 450px;"></iframe>
+                        <br />
+                    </div>
+                </div>
+
+                <div class="card">
+                    <embed class="pdfobject" type="application/pdf" title="Embedded PDF" src="../files/CV.pdf" style="overflow: auto; width: 100%; height: 100%;" />
+                    <h2>Presentations</h2>
+                    <h5>Title description, Sep 2, 2017</h5>
+                    <div class="fakeimg" style="height: 200px;">Image</div>
+                    <p>Some text..</p>
+                    <p>
+                        Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        ullamco.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h2>TITLE HEADING</h2>
+                    <h5>Title description, Sep 2, 2017</h5>
+                    <div class="fakeimg" style="height: 200px;">Image</div>
+                    <p>Some text..</p>
+                    <p>
+                        Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        ullamco.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h2>TITLE HEADING</h2>
+                    <h5>Title description, Sep 2, 2017</h5>
+                    <div class="fakeimg" style="height: 200px;">Image</div>
+                    <p>Some text..</p>
+                    <p>
+                        Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        ullamco.
+                    </p>
+                </div>
+ 
+            <div class="card">
+                <h2>TITLE HEADING</h2>
+                <h5>Title description, Dec 7, 2017</h5>
+                <div class="fakeimg" style="height: 200px;">Image</div>
+                <p>My Name is John Chiang Smith.</p>
+                <h1>PDFObject Example: Invoking conditional JavaScript upon successful embed (onclick)</h1>
+                <p><a class="embed-link" href="#">Click this link to embed the PDF.</a></p>
+                <div class="hidden" id="results"></div>
+                <div id="pdf"></div>
+                <a href="../src/js/pdfjs/web/viewer.html?file=../../../../../files/CV.pdf" target="_blank">在线预览PDF文件</a>
+            </div>
+            <!-- 这里还有其他 card 元素 -->
+        </div>
+    </div>
+    <div class="footer">
+        <h2>John C. Smith</h2>
+    </div>
+    <div id="footerContainer" class="footer"></div>
+    <script>
+        // 使用 JavaScript 动态加载模块
+        const footerContainer = document.getElementById('footerContainer');
+        fetch('footer.htm')
+            .then(response => response.text())
+            .then(html => {
+                footerContainer.innerHTML = html;
+            });
+    </script>
+</body>
+</html>

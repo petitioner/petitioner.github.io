@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="src/css/my.css" />
+        <script src="src/js/jquery-3.6.3.js"></script>
+
+        
+        <title>John Chiang Smith's Page</title>
+    </head>
+    
+<body>
+    <div id="headerContainer" ></div> 
+        <script>
+            $(function(){
+                $("#headerContainer").load("header.htm");
+                // $("#leftcolumnpage").load("leftcolumn.htm");
+                // $("#footer").load("footer.htm");
+            });
+        </script> 
+
+    <div class="row" style="height: 100%;">
+        <div class="leftcolumn" style="height: 100%;" id="leftcolumnContainer" ></div>
+        <script>
+            // 使用 JavaScript 动态加载模块
+            const leftcolumnContainer = document.getElementById('leftcolumnContainer');
+            fetch('leftcolumn.htm')
+                .then(response => response.text())
+                .then(html => {
+                    leftcolumnContainer.innerHTML = html;
+                });
+        </script>
+        <div class="rightcolumn" style="height: 100%;">
+             
+ 
+                <div class="card"  >
+                    <h2>Curriculum Vitae</h2>     
+                    
+                    <div class="fakeimg"   height="100%" > 
+                        <iframe src="CurriculumVitae.Content.htm" width="100%" height="100%" style="border: 0; height: 1450px;"></iframe>
+                        <br />
+                    </div>
+                </div>
+
+
+
+
+
+
+ 
+        </div>
+    </div>
+    <div class="footer">
+        <h2>John C. Smith</h2>
+    </div>
+    <div id="footerContainer" class="footer"></div>
+    <script>
+        // 使用 JavaScript 动态加载模块
+        const footerContainer = document.getElementById('footerContainer');
+        fetch('footer.htm')
+            .then(response => response.text())
+            .then(html => {
+                footerContainer.innerHTML = html;
+            });
+    </script>
+</body>
+</html>
