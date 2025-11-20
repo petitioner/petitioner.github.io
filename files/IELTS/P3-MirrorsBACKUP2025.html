@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>P3 – Mirrors and Perception</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { 
+    --line: #e5e7eb; --bg: #f6f7fb; --panel: #fff; --accent: #3b82f6; 
+    --muted: #6b7280; --shadow: 0 6px 20px rgba(0,0,0,.12); 
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { 
+    margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; 
+    background: var(--bg); padding-bottom: 70px; color: #111827;
+  }
+  .shell { display: flex; height: 100vh; width: 100%; }
+  .pane { background: var(--panel); overflow: auto; padding: 20px; }
+  #left { flex: 0 0 50%; min-width: 280px; }
+  #right { flex: 1 1 auto; min-width: 320px; background: #fbfbff; border-left: 1px solid var(--line); }
+  #divider { flex: 0 0 8px; background: linear-gradient(90deg, #e5e7eb, #d1d5db); cursor: ew-resize; position: relative; z-index: 5; user-select: none; }
+  h2, h3, h4 { margin: 0 0 10px; }
+  #left p, #right p, #right li { margin: 0 0 12px; line-height: 1.6; }
+  .group { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 14px; }
+  .q-block { margin-bottom: 16px; }
+  .options { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .options label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  .q-match-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+  .q-match-item .q-text { flex-grow: 1; }
+  .dropzone { 
+    border: 2px dashed #cbd5e1; background: #f8fafc; border-radius: 10px; 
+    min-height: 42px; padding: 6px; display: flex; align-items: center; justify-content: center; 
+    flex-shrink: 0; flex-basis: 300px;
+    transition: background-color 0.2s, outline 0.2s; 
+  }
+  .dropzone.over { outline: 2px solid var(--accent); background: #eff6ff; }
+  .dropzone .card { white-space: normal; text-align: left; font-size: 0.9em; cursor: default; box-shadow: none; }
+  .option-pool { background:#f9fafb; border: 1px solid var(--line); border-radius: 8px; padding: 12px; display:flex; flex-wrap:wrap; gap:8px; margin-top: 12px; min-height: 48px; }
+  .card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:8px 12px; display:inline-flex; align-items:center; cursor:grab; box-shadow:0 2px 4px rgba(0,0,0,.05); user-select:none; transition: box-shadow 0.2s; }
+  .card:active { cursor: grabbing; box-shadow: var(--shadow); }
+  .card.ghost { opacity: 0.4; }
+  button { padding: 8px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+  button:hover { background: #f8fafc; border-color: #cbd5e1; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.primary:hover { background: #2563eb; }
+  .practice-nav { background: #fff; padding: 12px 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 -2px 5px rgba(0,0,0,.05); flex-wrap: wrap; position: fixed; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--line); z-index: 4000; }
+  .practice-nav .title { font-weight: 600; color: var(--muted); }
+  .practice-nav .questions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .practice-nav .q-item { padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; cursor: pointer; font-size: 14px; transition: all 0.2s; min-width: 36px; text-align: center; }
+  .practice-nav .q-item:hover { background: #f1f5f9; border-color: var(--accent); }
+  .practice-nav .q-item.answered { background: #e0e7ff; border-color: var(--accent); color: var(--accent); font-weight: 500; }
+  .practice-nav .controls { display: flex; gap: 12px; margin-left: auto; align-items: center; }
+  #timer { background: #fff; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; font-family: 'Courier New', monospace; transition: all 0.2s; min-width: 70px; text-align: center; font-size: 14px; font-weight: bold; }
+  #timer:hover { background: #f1f5f9; border-color: var(--accent); }
+  #timer.paused { color: #ef4444; border-color: #fecaca; background: #fef2f2; }
+  .theme-toggle { background: #fff; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; width: 32px; height: 32px; font-size: 16px; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; }
+  #selbar { position: absolute; display: none; z-index: 2000; background: #111; color: #fff; border-radius: 8px; padding: 6px; box-shadow: var(--shadow); font-size: 13px; gap: 6px; align-items: center; }
+  #selbar button { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.25); padding: 4px 8px; border-radius: 6px; cursor: pointer; }
+  #notes { position: fixed; right: 12px; bottom: 85px; width: 320px; height: 42vh; background: #fff; border: 1px solid var(--line); border-radius: 12px; display: none; flex-direction: column; z-index: 1500; box-shadow: var(--shadow); }
+  #notes header { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  #notes textarea { flex: 1; border: 0; padding: 10px; resize: none; font-size: 14px; line-height: 1.5; background-color: inherit; color: inherit; }
+  #toast { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 8px 16px; border-radius: 4px; display: none; z-index: 3000; font-size: 14px; }
+  #results { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin: 16px 0; }
+  #results p { margin: 0 0 8px; }
+  #results pre { font-family: monospace; white-space: pre-wrap; margin: 0; }
+  .badge { background: #eef2ff; color: #4338ca; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: 500; }
+  details.answerbox { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-top: 10px; }
+  details.answerbox summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+  details.answerbox summary::-webkit-details-marker { display: none; }
+  #answerContent { margin-top: 10px; }
+  #answerContent ol { margin: 0; padding-left: 20px; }
+  .hl { background: #fff3a3; }
+  body.dark { --bg: #0f172a; --panel: #1e293b; --line: #334155; --muted: #94a3b8; color: #e2e8f0; }
+  body.dark .pane, body.dark #right { background: var(--panel); }
+  body.dark #right { background: #131c2d; }
+  body.dark button, body.dark .theme-toggle { background: #334155; color: #e2e8f0; border-color: #475569; }
+  body.dark .group, body.dark #results, body.dark details.answerbox, body.dark #notes { background: #1e293b; border-color: #334155; }
+  body.dark .practice-nav { background: #1e293b; border-top-color: #334155; }
+  body.dark .q-item { background: #334155; color: #e2e8f0; border-color: #475569; }
+  body.dark .q-item.answered { background: #1e40af; border-color: var(--accent); color: #93c5fd; }
+  body.dark #timer.paused { background: #402323; color: #f87171; border-color: #7f1d1d; }
+  body.dark .hl { background: #b45309; }
+  body.dark .option-pool { background:#0f172a; border-color: var(--line); }
+  body.dark .card { background: #334155; border-color: #475569; }
+  body.dark .dropzone { border-color: #475569; background: #131c2d; }
+  body.dark .dropzone.over { background: #1e293b; }
+  body.dark .badge { background: #312e81; color: #a5b4fc; }
+  @media (max-width: 768px) {
+    .shell { flex-direction: column; height: auto; }
+    #left, #right { min-height: 50vh; }
+    #divider { display: none; }
+    #notes { width: calc(100vw - 24px); right: 12px; left: 12px; }
+    .q-match-item { flex-direction: column; align-items: stretch; }
+    .dropzone { flex-basis: 42px; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. Bottom Navigation Bar -->
+<div class="practice-nav">
+  <div class="title">Questions</div>
+  <div class="questions">
+    <div class="q-item" id="q27-nav" onclick="scrollToElement('q27-anchor')">27</div>
+    <div class="q-item" id="q28-nav" onclick="scrollToElement('q27-anchor')">28</div>
+    <div class="q-item" id="q29-nav" onclick="scrollToElement('q27-anchor')">29</div>
+    <div class="q-item" id="q30-nav" onclick="scrollToElement('q27-anchor')">30</div>
+    <div class="q-item" id="q31-nav" onclick="scrollToElement('q31-anchor')">31</div>
+    <div class="q-item" id="q32-nav" onclick="scrollToElement('q31-anchor')">32</div>
+    <div class="q-item" id="q33-nav" onclick="scrollToElement('q31-anchor')">33</div>
+    <div class="q-item" id="q34-nav" onclick="scrollToElement('q31-anchor')">34</div>
+    <div class="q-item" id="q35-nav" onclick="scrollToElement('q35-anchor')">35</div>
+    <div class="q-item" id="q36-nav" onclick="scrollToElement('q35-anchor')">36</div>
+    <div class="q-item" id="q37-nav" onclick="scrollToElement('q35-anchor')">37</div>
+    <div class="q-item" id="q38-nav" onclick="scrollToElement('q35-anchor')">38</div>
+    <div class="q-item" id="q39-nav" onclick="scrollToElement('q35-anchor')">39</div>
+    <div class="q-item" id="q40-nav" onclick="scrollToElement('q35-anchor')">40</div>
+  </div>
+  <div class="controls">
+    <span id="timer" onclick="toggleTimer()">00:00</span>
+    <button class="theme-toggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">☀️</button>
+  </div>
+</div>
+
+<!-- 2. Main Content Shell -->
+<div class="shell">
+  <!-- Left Pane: Reading Passage -->
+  <section class="pane" id="left">
+    <h2>READING PASSAGE 3</h2>
+    <p>You should spend about 20 minutes on Questions 27–40, which are based on Reading Passage 3 below.</p>
+    
+    <p>Whether made of highly polished metal or of glass with a coating of metal on the back, mirrors have fascinated people for thousands of years. Ancient Egyptians were often depicted holding hand mirrors. For centuries, the people of Rajasthan in India have sewn bits of reflective glass into their clothing, and the resulting sparkle emphasizes the magic and mystery of that desert land.</p>
+    <p>To scientists, the simultaneous simplicity and complexity of mirrors make them effective and accessible tools for exploring questions about perception and cognition in humans and other 'intelligent' species, and about how the brain interprets and acts upon the great mass of sensory information from the external world. Mirrors are used to study how the brain decides what is self and what is other, how it judges distance, and how it reconstructs the richly three-dimensional quality of the outside world from what is essentially a two-dimensional snapshot taken by the retina of the eye. Mirrors are applied in medicine to create reflected images of patients' limbs or other body parts and thus trick the brain into healing itself. Mirror therapy has been successful in treating chronic pain and paralysis. In a sense, mirrors are the best 'virtual reality' system that can be built. The object 'inside' the mirror is virtual, but as far as our eyes are concerned, it exists as much as any other object.</p>
+    <p>Research has shown that mirrors can subtly affect human behaviour, often in surprisingly positive ways. Subjects tested in a room with a mirror have been found to work harder and to be less inclined to cheat, compared with control groups performing the same exercises in non-mirrored settings. In addition, the researchers found that people in a room with a mirror were comparatively less likely to make judgements about others based on negative social stereotypes concerning, for example, sex, race or religion. The researchers said that this indicates that when people are made to be self-aware, they are likelier to stop and think about what they are doing. A by-product of that awareness may be a shift away from acting on autopilot toward more desirable ways of behaving. Physical self-reflection, in other words, encourages philosophical self-reflection — a lesson in the ancient Greek notion that you cannot know or appreciate others until you know yourself.</p>
+    <p>The link between self-awareness and elaborate sociality may help explain why the few nonhuman species that have been found to recognize themselves in a mirror are those with sophisticated social lives. Animals that live in communal units, such as the great apes — chimpanzees, bonobos, orangutans and gorillas – along with dolphins and Asian elephants, have passed the famed mirror self-recognition test, which means they will, when given a mirror, scrutinize marks that have been applied to their faces or bodies. The animals will also check up on personal cleanliness, inspecting their mouths, nostrils and bodies. Yet not all members of self-reflective species will pass the mirror test. Studies of individual elephants and dolphins raised in isolation suggest that these particular individuals do not exhibit mirror self-recognition.</p>
+    <p>For that matter, humans do not necessarily see the face in the mirror as it actually is either. What the human eye sees objectively and how the brain interprets that image are not necessarily the same. Dr Nicholas Epley, Professor of Behavioral Science at the University of Chicago, USA, described experiments in which people were asked to pick out pictures of themselves from among pictures of other human faces. Participants identified their personal photographs significantly quicker when their faces had been computer-enhanced to be more appealing and they were likely to call this retouched image their genuine face. This self-delusion is not simply the result of a widespread preference for prettiness: when asked to match photographs of strangers, participants were, in fact, best at spotting unenhanced faces — that is, those not made to look prettier.</p>
+    <p>How can we be so self-delusional when the truth stares back at us? Dr Epley explains that, although we do indeed see ourselves in the mirror every day, we don't look exactly the same every time. There is the just-out-of-bed morning you, the ready-for-work you, the dressed-for-an-elegant-dinner you. Which image is you? People on average resolve the question of these multiple images of themselves in their favour. That is, they piece together a mental representation formed from different aspects of themselves when they are looking their best.</p>
+    <p>In a series of other studies, psychologists interviewed people about what they think a mirror shows them. They asked questions like, 'Imagine you are standing in front of a bathroom mirror; how big do you think the image of your face is on the surface? And what will happen to the size of that image if you step steadily backward, away from the glass?' To the first question, people overwhelmingly say 'The outline of my face on the mirror would be pretty much the size of my face. As for the second question, that's obvious: if I move away from the mirror, the size of my image will shrink with each step.' Both answers, it turns out, are wrong. Outline your face on a mirror, and you will find it to be exactly half the size of your real face. Step back as much as you please, and the size of that outlined oval will not change: it remains half the size of your face, even as the background scene reflected in the mirror steadily changes.</p>
+    
+    <p>&nbsp;</p> <!-- Final padding -->
+  </section>
+
+  <!-- Draggable Divider -->
+  <div id="divider" title="Drag to resize"></div>
+
+  <!-- Right Pane: Questions and Controls -->
+  <section class="pane" id="right">
+    <h3>Questions</h3>
+    
+    <div class="group">
+      <a id="q27-anchor"></a>
+      <h4>Questions 27–30</h4>
+      <p>Do the following statements agree with the claims of the writer in Reading Passage 3?</p>
+      <div class="q-block"><p><strong>27</strong> The conflicting nature of mirrors makes them inappropriate aids for investigating human thought.</p><div class="options"><label><input type="radio" name="q27" value="yes"> YES</label><label><input type="radio" name="q27" value="no"> NO</label><label><input type="radio" name="q27" value="not given"> NOT GIVEN</label></div></div>
+      <div class="q-block"><p><strong>28</strong> Humans find it difficult to distinguish between reflections of two- and three-dimensional objects.</p><div class="options"><label><input type="radio" name="q28" value="yes"> YES</label><label><input type="radio" name="q28" value="no"> NO</label><label><input type="radio" name="q28" value="not given"> NOT GIVEN</label></div></div>
+      <div class="q-block"><p><strong>29</strong> Illusions using mirrors can help in the treatment of medical problems.</p><div class="options"><label><input type="radio" name="q29" value="yes"> YES</label><label><input type="radio" name="q29" value="no"> NO</label><label><input type="radio" name="q29" value="not given"> NOT GIVEN</label></div></div>
+      <div class="q-block"><p><strong>30</strong> Mirrors for use in scientific experiments have to be constructed to precise specifications.</p><div class="options"><label><input type="radio" name="q30" value="yes"> YES</label><label><input type="radio" name="q30" value="no"> NO</label><label><input type="radio" name="q30" value="not given"> NOT GIVEN</label></div></div>
+    </div>
+    
+    <div class="group">
+      <a id="q31-anchor"></a>
+      <h4>Questions 31–34</h4>
+      <p>Choose the correct letter, A, B, C or D.</p>
+      <div class="q-block"><p><strong>31</strong> If a mirror is present during certain experiments, the subjects tend to</p><div class="options"><label><input type="radio" name="q31" value="A"> A monitor the behaviour of other subjects.</label><label><input type="radio" name="q31" value="B"> B act more industriously and independently.</label><label><input type="radio" name="q31" value="C"> C become less confident of themselves.</label><label><input type="radio" name="q31" value="D"> D focus overwhelmingly on their own reflection.</label></div></div>
+      <div class="q-block"><p><strong>32</strong> Research results imply that physical self-reflection leads people to be</p><div class="options"><label><input type="radio" name="q32" value="A"> A more tolerant of others.</label><label><input type="radio" name="q32" value="B"> B more satisfied with their own lives.</label><label><input type="radio" name="q32" value="C"> C more open to learning from others.</label><label><input type="radio" name="q32" value="D"> D more likely to accept unpopular ideas.</label></div></div>
+      <div class="q-block"><p><strong>33</strong> The successful completion of a well-known mirror test suggests that the animal subjects</p><div class="options"><label><input type="radio" name="q33" value="A"> A find the image in the mirror uninteresting.</label><label><input type="radio" name="q33" value="B"> B recognise the basic need for personal cleanliness.</label><label><input type="radio" name="q33" value="C"> C realise that the marks they see are on their own body.</label><label><input type="radio" name="q33" value="D"> D understand that marks on their face have been made deliberately.</label></div></div>
+      <div class="q-block"><p><strong>34</strong> Which of the following is the most suitable title for Reading Passage 3?</p><div class="options"><label><input type="radio" name="q34" value="A"> A Conflicting interpretations of mirror research</label><label><input type="radio" name="q34" value="B"> B Psychological responses to mirror images</label><label><input type="radio" name="q34" value="C"> C The physical properties of mirrors</label><label><input type="radio" name="q34" value="D"> D The use of mirrors through history</label></div></div>
+    </div>
+
+    <div class="group">
+      <a id="q35-anchor"></a>
+      <h4>Questions 35–40</h4>
+      <p>Complete each sentence with the correct ending, A–I, below.</p>
+      <div class="q-match-item"><span class="q-text"><strong>35</strong> Dr Epley found that when identifying images of themselves, people</span><span class="dropzone" data-target="q35"></span></div>
+      <div class="q-match-item"><span class="q-text"><strong>36</strong> When trying to identify images of unfamiliar individuals, Dr Epley found that people most frequently</span><span class="dropzone" data-target="q36"></span></div>
+      <div class="q-match-item"><span class="q-text"><strong>37</strong> Dr Epley says that a single objective reflection is impossible because people</span><span class="dropzone" data-target="q37"></span></div>
+      <div class="q-match-item"><span class="q-text"><strong>38</strong> Dr Epley says that when forming an opinion of how they think they look, people</span><span class="dropzone" data-target="q38"></span></div>
+      <div class="q-match-item"><span class="q-text"><strong>39</strong> When guessing the size of their mirrored face from close up, people</span><span class="dropzone" data-target="q39"></span></div>
+      <div class="q-match-item"><span class="q-text"><strong>40</strong> As they imagine stepping backwards from a mirror, people</span><span class="dropzone" data-target="q40"></span></div>
+      <div class="option-pool" id="pool-endings">
+        <div class="card" draggable="true" data-value="A"><strong>A</strong> believe they can improve their looks by being friendly.</div>
+        <div class="card" draggable="true" data-value="B"><strong>B</strong> are confronted daily with their images in a variety of situations.</div>
+        <div class="card" draggable="true" data-value="C"><strong>C</strong> assume their image will get progressively smaller.</div>
+        <div class="card" draggable="true" data-value="D"><strong>D</strong> recognise familiar faces much more readily.</div>
+        <div class="card" draggable="true" data-value="E"><strong>E</strong> estimate the image to be larger than it actually is.</div>
+        <div class="card" draggable="true" data-value="F"><strong>F</strong> select those photographs which have not been altered.</div>
+        <div class="card" draggable="true" data-value="G"><strong>G</strong> find there is little change in the image they face.</div>
+        <div class="card" draggable="true" data-value="H"><strong>H</strong> locate the photographs faster if they are made to look attractive.</div>
+        <div class="card" draggable="true" data-value="I"><strong>I</strong> create a positive generalised self-image.</div>
+      </div>
+    </div>
+
+    <!-- Controls and Results -->
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <button class="primary" onclick="grade()">Submit</button>
+      <button onclick="resetForm()">Reset</button>
+      <button onclick="toggleNotes()">Notes</button>
+    </div>
+    <div id="results"></div>
+    <details class="answerbox" id="answerBox">
+      <summary>Show answers (click to toggle) <span class="badge">hidden</span></summary>
+      <div id="answerContent"></div>
+    </details>
+  </section>
+</div>
+
+<!-- 3. UI Helper Elements -->
+<div aria-label="Selection tools" id="selbar" role="toolbar">
+  <button id="btnHL">Highlight</button>
+  <button id="btnUH">Remove</button>
+  <button id="btnNote">Note</button>
+</div>
+<div id="notes">
+  <header><strong>Notes</strong><div><button id="btnCopy">Copy</button><button id="btnClose">Close</button></div></header>
+  <textarea id="noteArea" placeholder="Type your notes here..."></textarea>
+</div>
+<div id="toast"></div>
+
+<script>
+// --- MASTER JAVASCRIPT TEMPLATE ---
+
+// 1. STATE & ANSWERS
+const answers = {
+    q27: "no", q28: "not given", q29: "yes", q30: "not given",
+    q31: "b", q32: "a", q33: "c", q34: "b",
+    q35: "h", q36: "f", q37: "b", q38: "i", q39: "e", q40: "c"
+};
+
+// 2. UI & INTERACTIVITY
+let timerSeconds = 0, isTimerPaused = false;
+const timerEl = document.getElementById('timer');
+
+function toggleTimer() { isTimerPaused = !isTimerPaused; timerEl.classList.toggle('paused', isTimerPaused); showToast(isTimerPaused ? 'Timer paused' : 'Timer resumed'); }
+setInterval(() => { if (!isTimerPaused) { timerSeconds++; const m = String(Math.floor(timerSeconds / 60)).padStart(2, '0'); const s = String(timerSeconds % 60).padStart(2, '0'); timerEl.textContent = `${m}:${s}`; } }, 1000);
+function toggleDarkMode() { document.body.classList.toggle('dark'); const isDark = document.body.classList.contains('dark'); localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled'); document.querySelector('.theme-toggle').textContent = isDark ? '🌙' : '☀️'; }
+function scrollToElement(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+function showToast(msg) { const toastEl = document.getElementById('toast'); toastEl.textContent = msg; toastEl.style.display = 'block'; setTimeout(() => { toastEl.style.display = 'none'; }, 1500); }
+
+// 3. HIGHLIGHT AND NOTES FUNCTIONALITY
+const selbar = document.getElementById('selbar');
+let lastRange = null;
+function handleTextSelection() { setTimeout(() => { const sel = window.getSelection(); if (sel.toString().trim().length > 0) { lastRange = sel.getRangeAt(0).cloneRange(); const rect = lastRange.getBoundingClientRect(); selbar.style.top = `${window.scrollY + rect.top - selbar.offsetHeight - 5}px`; selbar.style.left = `${window.scrollX + rect.left + rect.width / 2 - selbar.offsetWidth / 2}px`; selbar.style.display = 'flex'; } else { selbar.style.display = 'none'; } }, 10); }
+['left', 'right'].forEach(id => document.getElementById(id).addEventListener('mouseup', handleTextSelection));
+document.addEventListener('mousedown', (e) => { if (!selbar.contains(e.target)) selbar.style.display = 'none'; });
+document.getElementById('btnHL').addEventListener('click', () => { if (lastRange) { const span = document.createElement('span'); span.className = 'hl'; try { lastRange.surroundContents(span); } catch(e) { console.error(e); } selbar.style.display = 'none'; window.getSelection().removeAllRanges(); } });
+document.getElementById('btnUH').addEventListener('click', () => { if (lastRange) { let container = lastRange.commonAncestorContainer; if (container.nodeType !== 1) container = container.parentElement; const highlights = container.querySelectorAll('.hl'); highlights.forEach(hl => { if (window.getSelection().containsNode(hl, true)) { const parent = hl.parentNode; while (hl.firstChild) parent.insertBefore(hl.firstChild, hl); parent.removeChild(hl); parent.normalize(); } }); selbar.style.display = 'none'; window.getSelection().removeAllRanges(); } });
+document.getElementById('btnNote').addEventListener('click', () => { const text = window.getSelection().toString().trim(); if (text) { const noteArea = document.getElementById('noteArea'); noteArea.value += (noteArea.value ? '\n\n' : '') + `> ${text}`; toggleNotes(); noteArea.scrollTop = noteArea.scrollHeight; } selbar.style.display = 'none'; });
+function toggleNotes() { const notePad = document.getElementById('notes'); notePad.style.display = notePad.style.display === 'flex' ? 'none' : 'flex'; }
+document.getElementById('btnClose').addEventListener('click', toggleNotes);
+document.getElementById('btnCopy').addEventListener('click', () => { navigator.clipboard.writeText(document.getElementById('noteArea').value); showToast('Notes copied'); });
+
+// 4. DRAG AND DROP LOGIC
+document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', e.target.id); setTimeout(() => e.target.classList.add('ghost'), 0); });
+    card.addEventListener('dragend', e => e.target.classList.remove('ghost'));
+});
+document.querySelectorAll('.dropzone').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+    zone.addEventListener('drop', e => {
+        e.preventDefault(); zone.classList.remove('over');
+        const cardId = e.dataTransfer.getData('text/plain');
+        const draggedCard = document.getElementById(cardId);
+        if (!draggedCard) return;
+        const cardToDrop = draggedCard.dataset.clone === 'true' ? draggedCard.cloneNode(true) : draggedCard;
+        cardToDrop.classList.remove('ghost');
+        if (zone.children.length > 0) {
+            const existingCard = zone.children[0];
+            if (existingCard.dataset.clone !== 'true') {
+                const itsOriginPool = document.getElementById(existingCard.dataset.originPool);
+                if (itsOriginPool) itsOriginPool.appendChild(existingCard);
+            }
+        }
+        zone.innerHTML = '';
+        zone.appendChild(cardToDrop);
+        updateAnswerStatus();
+    });
+});
+
+// 5. GRADING & STATE MANAGEMENT
+function grade() {
+    let total = 0, correct = 0, lines = [];
+    const push = (q, ok, user, correctAns) => { total++; if(ok) correct++; const displayAns = String(correctAns).toUpperCase(); lines.push(`${q.toUpperCase().replace('Q','')}: ${user || 'None'} ${ok ? '✅' : `❌ (Ans: ${displayAns})`}`); };
+    Object.keys(answers).forEach(qKey => {
+        const correctAns = answers[qKey];
+        let userAnswer = null;
+        const radio = document.querySelector(`input[name="${qKey}"]:checked`);
+        const dropzone = document.querySelector(`.dropzone[data-target="${qKey}"]`);
+        if (radio) userAnswer = radio.value;
+        else if (dropzone) userAnswer = dropzone.querySelector('.card')?.dataset.value || null;
+        const isCorrect = userAnswer !== null && userAnswer.toLowerCase() === String(correctAns).toLowerCase();
+        push(qKey, isCorrect, userAnswer, correctAns);
+    });
+    const acc = total ? Math.round(100 * correct / total) : 0;
+    document.getElementById('results').innerHTML = `<p><strong>Score:</strong> ${correct}/${total} <span class="badge">Accuracy ${acc}%</span></p><pre>${lines.join('\n')}</pre>`;
+    document.getElementById('answerContent').innerHTML = `<ol start="27">${Object.entries(answers).map(([key, val]) => `<li><strong>${key.replace('q','')}:</strong> ${String(val).toUpperCase()}</li>`).join('')}</ol>`;
+    document.querySelector('#answerBox .badge').textContent = 'tap to view';
+    document.getElementById('answerBox').open = true;
+}
+
+function resetForm() {
+    document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+    document.querySelectorAll('.dropzone').forEach(zone => {
+        if (zone.children.length > 0) {
+            const card = zone.children[0];
+            if (card.dataset.clone !== 'true') {
+                const originPool = document.getElementById(card.dataset.originPool);
+                if (originPool) originPool.appendChild(card);
+            }
+        }
+        zone.innerHTML = '';
+    });
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('answerContent').innerHTML = '';
+    document.querySelector('#answerBox .badge').textContent = 'hidden';
+    document.getElementById('answerBox').open = false;
+    updateAnswerStatus();
+    showToast('Form has been reset');
+}
+
+function updateAnswerStatus() {
+    document.querySelectorAll('.q-item').forEach(item => {
+        const qNum = item.id.replace('-nav', '');
+        let answered = false;
+        const radio = document.querySelector(`input[name="${qNum}"]:checked`);
+        const dropzone = document.querySelector(`.dropzone[data-target="${qNum}"]`);
+        if (radio) answered = true;
+        else if (dropzone) answered = !!dropzone.querySelector('.card');
+        item.classList.toggle('answered', answered);
+    });
+}
+
+// 6. INITIALIZATION
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        toggleDarkMode();
+        document.querySelector('.theme-toggle').textContent = '🌙';
+    }
+    document.querySelectorAll('input[type="radio"]').forEach(el => el.addEventListener('change', updateAnswerStatus));
+    document.querySelectorAll('.card').forEach((card, index) => {
+        if (!card.id) card.id = `card-${index}`;
+        if (card.parentElement.classList.contains('option-pool')) {
+            card.dataset.originPool = card.parentElement.id;
+            card.parentElement.addEventListener('dragover', e => e.preventDefault());
+            card.parentElement.addEventListener('drop', e => {
+                e.preventDefault();
+                const cardId = e.dataTransfer.getData('text/plain');
+                const dragged = document.getElementById(cardId);
+                if (dragged && dragged.parentElement.classList.contains('dropzone')) {
+                    dragged.parentElement.innerHTML = '';
+                    if (dragged.dataset.clone !== 'true') e.currentTarget.appendChild(dragged);
+                    updateAnswerStatus();
+                }
+            });
+        }
+    });
+});
+</script>
+
+<!-- Practice page enhancer integration -->
+<script>
+  if (!window.practicePageEnhancer) {
+    const script = document.createElement('script');
+    script.src = '../../js/practice-page-enhancer.js';
+    script.onload = () => console.log('Enhancer loaded.');
+    script.onerror = () => { console.error('Enhancer failed to load'); loadInlineEnhancer(); };
+    document.head.appendChild(script);
+  }
+  function loadInlineEnhancer() { if (window.practicePageEnhancer) return; window.practicePageEnhancer = { initialize: function () { this.setupCommunication(); this.setupAnswerListeners(); this.interceptSubmit(); }, setupCommunication: function () { this.parentWindow = window.opener || window.parent; window.addEventListener('message', (e) => { if (e.data?.type === 'INIT_SESSION') { this.sessionId = e.data.data.sessionId; this.sendMessage('SESSION_READY', { pageType: this.detectPageType(), url: window.location.href }); } }); }, detectPageType: () => { const t = document.title || ''; if (t.includes('P1')) return 'P1'; if (t.includes('P2')) return 'P2'; if (t.includes('P3')) return 'P3'; return 'unknown'; }, setupAnswerListeners: function () { this.answers = {}; this.startTime = Date.now(); document.addEventListener('change', (e) => { if (e.target.name) this.answers[e.target.name] = e.target.value; }); const observer = new MutationObserver(mutations => { mutations.forEach(mutation => { if (mutation.type === 'childList' && mutation.target.classList.contains('dropzone')) { const zone = mutation.target; const qName = zone.dataset.target; const card = zone.querySelector('.card'); this.answers[qName] = card ? card.dataset.value : ''; } }); }); document.querySelectorAll('.dropzone').forEach(zone => observer.observe(zone, { childList: true })); }, interceptSubmit: function () { if (typeof window.grade === 'function') { const originalGrade = window.grade; window.grade = () => { originalGrade(); setTimeout(() => this.handleSubmit(), 200); }; } }, handleSubmit: function () { const results = { sessionId: this.sessionId, startTime: this.startTime, endTime: Date.now(), duration: Math.round((Date.now() - this.startTime) / 1000), answers: this.answers, scoreInfo: this.extractScore(), pageType: this.detectPageType(), url: window.location.href }; this.sendMessage('PRACTICE_COMPLETE', results); }, extractScore: () => { const el = document.getElementById('results'); if (!el) return null; const text = el.textContent || ''; const scoreMatch = text.match(/Score:\s*(\d+)\/(\d+)/i); if (scoreMatch) { const correct = parseInt(scoreMatch[1]), total = parseInt(scoreMatch[2]); return { correct, total, accuracy: total > 0 ? correct / total : 0, percentage: Math.round((correct / total) * 100), source: 'inline_extraction' }; } return null; }, sendMessage: function (type, data) { if (this.parentWindow) this.parentWindow.postMessage({ type, data, source: 'practice_page' }, '*'); } }; if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => window.practicePageEnhancer.initialize()); else window.practicePageEnhancer.initialize(); }
+</script>
+
+</body>
+</html>
